@@ -1,5 +1,8 @@
 # R-AFP
 
+![Continuous integration](https://github.com/brionescl/r-afp/workflows/Continuous%20integration/badge.svg)
+[![codecov](https://codecov.io/gh/brionescl/r-afp/branch/master/graph/badge.svg)](https://codecov.io/gh/brionescl/r-afp)
+
 ## Docker
 
 If you have docker and docker-composer installed, just run the containers:
