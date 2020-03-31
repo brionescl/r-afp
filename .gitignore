@@ -1,0 +1,14 @@
+/.vscode
+/node_modules
+/public/hot
+/public/storage
+/public/test-coverage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+clover.xml
+docker-compose.yml
+npm-debug.log
+yarn-error.log
