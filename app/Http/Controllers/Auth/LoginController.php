@@ -31,6 +31,7 @@ class LoginController extends Controller
     /**
      * Create a new controller instance.
      *
+     * @codeCoverageIgnore
      * @return void
      */
     public function __construct()
