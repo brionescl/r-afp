@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
+     * @codeCoverageIgnore
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
@@ -31,6 +32,7 @@ class Kernel extends ConsoleKernel
     /**
      * Register the commands for the application.
      *
+     * @codeCoverageIgnore
      * @return void
      */
     protected function commands()
