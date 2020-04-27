@@ -59,7 +59,7 @@ class Superintendency
     public function getRentability(Carbon $date)
     {
         $this->scrapingDate = $date;
-        return $this->scraping($date);
+        return $this->scraping();
     }
 
     /**
