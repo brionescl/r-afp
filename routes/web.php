@@ -17,7 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get(
-    '/superintendency/rentability/{year}/{month}',
-    'SuperintendencyController@rentability'
-);
+Route::get('/rentability/{year}/{month}', 'SuperintendencyController@rentability');

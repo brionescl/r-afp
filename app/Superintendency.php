@@ -13,7 +13,7 @@ class Superintendency
      *
      * @var string
      */
-    private $url;
+    private $url = 'https://www.spensiones.cl/apps/rentabilidad/getRentabilidad.php';
 
     /**
      * List of fund administrator
@@ -27,7 +27,7 @@ class Superintendency
      *
      * @var array
      */
-    private $investmentFunds = [];
+    private $investmentFunds = ['A', 'B', 'C', 'D', 'E'];
 
     /**
      * Scraping date
@@ -38,9 +38,7 @@ class Superintendency
 
     public function __construct()
     {
-        $this->url = 'https://www.spensiones.cl/apps/rentabilidad/getRentabilidad.php';
         $this->setFundAdministrators();
-        $this->investmentFunds = ['A', 'B', 'C', 'D', 'E'];
     }
 
     /**
@@ -77,13 +75,15 @@ class Superintendency
     private function scraping()
     {
         $data = [];
+        $year = $this->scrapingDate->isoFormat('YYYY');
+        $month = $this->scrapingDate->isoFormat('MM');
 
         (Goutte::request(
             'POST',
             "{$this->url}?tiprent=FP&template=0",
             [
-                'aaaa' => $this->scrapingDate->isoFormat('YYYY'),
-                'mm' => $this->scrapingDate->isoFormat('MM'),
+                'aaaa' => $year,
+                'mm' => $month,
                 'btn' => 'Buscar'
             ]
         ))->filter('table')->each(function ($table) use (&$data) {

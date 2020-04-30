@@ -11,7 +11,7 @@ class SuperintendencyController extends Controller
     /**
      * Get rentability
      *
-     * @param  int  $year
+     * @param int $year
      * @param int $month
      * @return string json
      */

@@ -18,7 +18,7 @@ class SuperintendencyTest extends TestCase
         $year = $date->isoFormat('YYYY');
         $month = $date->isoFormat('MM');
 
-        $response = $this->get("/superintendency/rentability/{$year}/{$month}");
+        $response = $this->get("/rentability/{$year}/{$month}");
         $response->assertStatus(200);
 
         $content = $response->decodeResponseJson();
@@ -35,7 +35,7 @@ class SuperintendencyTest extends TestCase
         $date = Carbon::now()->addMonth(1);
         $year = $date->isoFormat('YYYY');
         $month = $date->isoFormat('MM');
-        $response = $this->get("/superintendency/rentability/{$year}/{$month}");
+        $response = $this->get("/rentability/{$year}/{$month}");
 
         $emptyInvestmentFunds = [
             'A' => 0,
