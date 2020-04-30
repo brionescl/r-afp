@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
+// @codingStandardsIgnoreLine
 class FundAdministratorSeeder extends Seeder
 {
     /**
@@ -12,14 +14,16 @@ class FundAdministratorSeeder extends Seeder
      */
     public function run()
     {
+        $now = Carbon::now();
+
         DB::table('fund_administrators')->insert([
-            ['name' => 'CAPITAL', 'created_at' => Carbon::now()],
-            ['name' => 'CUPRUM', 'created_at' => Carbon::now()],
-            ['name' => 'HABITAT', 'created_at' => Carbon::now()],
-            ['name' => 'MODELO', 'created_at' => Carbon::now()],
-            ['name' => 'PLANVITAL', 'created_at' => Carbon::now()],
-            ['name' => 'PROVIDA', 'created_at' => Carbon::now()],
-            ['name' => 'UNO', 'created_at' => Carbon::now()]
+            ['name' => 'CAPITAL', 'created_at' => $now],
+            ['name' => 'CUPRUM', 'created_at' => $now],
+            ['name' => 'HABITAT', 'created_at' => $now],
+            ['name' => 'MODELO', 'created_at' => $now],
+            ['name' => 'PLANVITAL', 'created_at' => $now],
+            ['name' => 'PROVIDA', 'created_at' => $now],
+            ['name' => 'UNO', 'created_at' => $now]
         ]);
     }
 }
