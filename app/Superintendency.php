@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\FundAdministrator;
 use Carbon\Carbon;
 use Weidner\Goutte\GoutteFacade as Goutte;
 
@@ -38,16 +39,21 @@ class Superintendency
     public function __construct()
     {
         $this->url = 'https://www.spensiones.cl/apps/rentabilidad/getRentabilidad.php';
-        $this->fundAdministrators = [
-            'CAPITAL',
-            'CUPRUM',
-            'HABITAT',
-            'MODELO',
-            'PLANVITAL',
-            'PROVIDA',
-            'UNO'
-        ];
+        $this->setFundAdministrators();
         $this->investmentFunds = ['A', 'B', 'C', 'D', 'E'];
+    }
+
+    /**
+     * Set array of fund administrators
+     *
+     * @return void
+     */
+    private function setFundAdministrators()
+    {
+        $fundAdministrators = FundAdministrator::all(['name']);
+        foreach ($fundAdministrators as $fundAdministrator) {
+            $this->fundAdministrators[] = strtoupper($fundAdministrator->name);
+        }
     }
 
     /**
@@ -82,7 +88,7 @@ class Superintendency
             ]
         ))->filter('table')->each(function ($table) use (&$data) {
             $th = $table->filter('th')->first()->text('default', true);
-            $investmentFund = $this->getInvestmentFund($th);
+            $investmentFund = $this->extractInvestmentFund($th);
 
             if (is_null($investmentFund)) {
                 return;
@@ -90,7 +96,7 @@ class Superintendency
 
             $table->filter('tr')->each(function ($tr) use (&$data, $investmentFund) {
                 $td = $tr->filter('td')->first()->text('default', true);
-                $fundAdministrator = $this->getFundAdministrator($td);
+                $fundAdministrator = $this->extractFundAdministrator($td);
 
                 if (is_null($fundAdministrator)) {
                     return;
@@ -105,12 +111,12 @@ class Superintendency
     }
 
     /**
-     * Get investment fund
+     * Extract investment fund
      *
      * @param string $str
      * @return string|null
      */
-    private function getInvestmentFund($str)
+    private function extractInvestmentFund($str)
     {
         foreach ($this->investmentFunds as $investmentFund) {
             if (stripos($str, "FONDO TIPO {$investmentFund}") !== false) {
@@ -122,12 +128,12 @@ class Superintendency
     }
 
     /**
-     * Get fund administrator
+     * Extract fund administrator
      *
      * @param string $str
      * @return string|null
      */
-    private function getFundAdministrator($str)
+    private function extractFundAdministrator($str)
     {
         foreach ($this->fundAdministrators as $fundAdministrator) {
             if ($fundAdministrator == $str) {
