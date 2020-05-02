@@ -54,6 +54,11 @@ class Superintendency
         }
     }
 
+    public function getInvestmentFunds()
+    {
+        return $this->investmentFunds;
+    }
+
     /**
      * Get rentability from scraper
      *
