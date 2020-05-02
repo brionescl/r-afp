@@ -70,7 +70,7 @@ docker-compose exec app php artisan db:seeder
 Create a testing database
 
 ```
-touch database/test.sqlite
+touch database/database.sqlite
 ```
 
 The next step is to configure the test environment

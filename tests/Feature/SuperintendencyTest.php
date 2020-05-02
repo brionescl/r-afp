@@ -5,8 +5,12 @@ namespace Tests\Feature;
 use Carbon\Carbon;
 use Tests\TestCase;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 class SuperintendencyTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Get rentability
      *
