@@ -5,11 +5,12 @@ namespace Tests\Feature;
 use Carbon\Carbon;
 use Tests\TestCase;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SuperintendencyTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations, RefreshDatabase;
 
     /**
      * Get rentability

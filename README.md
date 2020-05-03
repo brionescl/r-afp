@@ -67,18 +67,6 @@ docker-compose exec app php artisan db:seeder
 
 ## Run tests
 
-Create a testing database
-
-```
-touch database/database.sqlite
-```
-
-The next step is to configure the test environment
-
-```
-cp .env.testing.example .env.testing
-```
-
 Execute phpunit
 
 ```

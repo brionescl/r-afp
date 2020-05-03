@@ -29,6 +29,11 @@
         <server name="MAIL_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
+
+        <env name="DB_CONNECTION" value="sqlite" force="true"/>
+        <env name="DB_DATABASE" value=":memory:" force="true"/>
+        <env name="DB_DRIVER" value="sqlite" force="true"/>
+
         <ini name="memory_limit" value="512M" />
     </php>
     <logging>
