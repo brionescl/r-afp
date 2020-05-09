@@ -15,7 +15,7 @@
             }
 
             .band {
-                width: 90%;
+                width: 60%;
                 max-width: 1240px;
                 margin: 0 auto;
 
@@ -62,20 +62,40 @@
             }
 
             .card h1 {
-                font-size: 20px;
+                font-size: 15px;
                 margin: 0;
-                color: #333;
+                color: #7999e4;
+                text-transform: lowercase;
+            }
+
+            .card h1::first-letter {
+                text-transform: uppercase;
             }
 
             .card p {
-                line-height: 1.4;
+                line-height: 0.5;
+                padding-left: 10px;
+            }
+
+            .form {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 20px;
             }
         </style>
     </head>
     <body>
+        <div class="form">
+            {!! Form::open(['url' => '/', 'method' => 'post']) !!}
+                {!! Form::select('year', $years, $year) !!}
+                {!! Form::select('month', $months, $month) !!}
+                {!! Form::submit('Buscar') !!}
+            {!! Form::close() !!}
+        </div>
         <div class="band">
             @foreach ($fundAdministrators as $fundAdministrator)
-                <div class="item-1">
+                <div class="item-{{ $fundAdministrator->id }}">
                     <div class="card">
                         <article>
                             <h1>{{ $fundAdministrator->name }}</h1>
