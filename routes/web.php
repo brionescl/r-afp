@@ -13,5 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'DashboardController@index');
-Route::get('/rentability/{year}/{month}', 'SuperintendencyController@rentability');
+Route::get('', 'DashboardController@index');
+Route::get('dashboard/{year}/{month}', 'DashboardController@dashboard')->name('dashboard');
+Route::get('dashboard/{year}/{month}/sync', 'DashboardController@sync')->name('sync');

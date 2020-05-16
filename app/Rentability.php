@@ -10,6 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Rentability extends Model
 {
+    protected $fillable = [
+        'fund_administrator_id',
+        'investment_fund',
+        'date'
+    ];
+
     /**
      * Get the fund administrator
      *

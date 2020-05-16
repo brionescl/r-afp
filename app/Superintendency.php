@@ -6,6 +6,8 @@ use App\FundAdministrator;
 use Carbon\Carbon;
 use Weidner\Goutte\GoutteFacade as Goutte;
 
+use Illuminate\Database\Eloquent\Collection;
+
 class Superintendency
 {
     /**
@@ -18,9 +20,9 @@ class Superintendency
     /**
      * List of fund administrator
      *
-     * @var array
+     * @var Collection|FundAdministrator[]
      */
-    private $fundAdministrators = [];
+    private $fundAdministrators;
 
     /**
      * List of investment fund
@@ -29,73 +31,112 @@ class Superintendency
      */
     private $investmentFunds = ['A', 'B', 'C', 'D', 'E'];
 
-    /**
-     * Scraping date
-     *
-     * @var Carbon
-     */
-    private $scrapingDate = null;
-
     public function __construct()
     {
-        $this->setFundAdministrators();
+        $this->fundAdministrators = FundAdministrator::all();
     }
 
     /**
-     * Set array of fund administrators
+     * Get collection of fund administrators
      *
-     * @return void
+     * @return Collection|FundAdministrator[]
      */
-    private function setFundAdministrators()
+    public function getFundAdministrators(): Collection
     {
-        $fundAdministrators = FundAdministrator::all(['name']);
-        foreach ($fundAdministrators as $fundAdministrator) {
-            $this->fundAdministrators[] = strtoupper($fundAdministrator->name);
-        }
+        return $this->fundAdministrators;
     }
 
-    public function getInvestmentFunds()
+    /**
+     * Get array of investment funds
+     *
+     * @return array
+     */
+    public function getInvestmentFunds(): array
     {
         return $this->investmentFunds;
     }
 
     /**
-     * Get rentability from scraper
+     * Get rentabilities of all fund administrators by date
      *
      * @param Carbon $date
      * @return array
      */
-    public function getRentability(Carbon $date)
+    public function getRentabilitiesByDate(Carbon $date): array
     {
-        $this->scrapingDate = $date;
-        return $this->scraping();
+        $rentabilities = [];
+
+        foreach ($this->fundAdministrators as $fundAdministrator) {
+            $rentabilitiesOfFunds = $fundAdministrator->getRentabilitiesOfFundsByDate($date);
+
+            if (!$rentabilitiesOfFunds->isEmpty()) {
+                foreach ($rentabilitiesOfFunds as $rentability) {
+                    dd($rentability->rentability);
+                }
+            }
+        }
+
+        return $rentabilities;
+    }
+
+    /**
+     * Sync fund rentabilities of all fund administrators
+     * by specific date
+     *
+     * @param Carbon $date
+     * @return void
+     */
+    public function syncRentabilities(Carbon $date): void
+    {
+        $data = $this->scraping($date);
+
+        if ($this->allRentabilitiesAreEmpty($data)) {
+            return;
+        }
+
+        foreach ($this->fundAdministrators as $fundAdministrator) {
+            $fundAdministratorName = strtoupper($fundAdministrator->name);
+
+            if (!isset($data[$fundAdministratorName])) {
+                continue;
+            }
+
+            foreach ($this->investmentFunds as $investmentFund) {
+                $rentability = Rentability::firstOrNew([
+                    'fund_administrator_id' => $fundAdministrator->id,
+                    'investment_fund' => $investmentFund,
+                    'date' => $date->format('Y-m-01')
+                ]);
+                $rentability->rentability = $data[$fundAdministratorName][$investmentFund];
+                $rentability->save();
+            }
+        }
     }
 
     /**
      * Scraping page of pension superintendency
      * Get data of rentability
      *
+     * @param Carbon $date
      * @return array
      */
-    private function scraping()
+    private function scraping(Carbon $date): array
     {
         $data = [];
-        $year = $this->scrapingDate->isoFormat('YYYY');
-        $month = $this->scrapingDate->isoFormat('MM');
 
         (Goutte::request(
             'POST',
             "{$this->url}?tiprent=FP&template=0",
             [
-                'aaaa' => $year,
-                'mm' => $month,
+                'aaaa' => $date->format('Y'),
+                'mm' => $date->format('m'),
                 'btn' => 'Buscar'
             ]
         ))->filter('table')->each(function ($table) use (&$data) {
             $th = $table->filter('th')->first()->text('default', true);
             $investmentFund = $this->extractInvestmentFund($th);
 
-            if (is_null($investmentFund)) {
+            if (empty($investmentFund)) {
                 return;
             }
 
@@ -103,7 +144,7 @@ class Superintendency
                 $td = $tr->filter('td')->first()->text('default', true);
                 $fundAdministrator = $this->extractFundAdministrator($td);
 
-                if (is_null($fundAdministrator)) {
+                if (empty($fundAdministrator)) {
                     return;
                 }
 
@@ -116,12 +157,32 @@ class Superintendency
     }
 
     /**
+     * If all rentabilities are empty, then return true
+     *
+     * @param array $data
+     * @return bool
+     */
+    private function allRentabilitiesAreEmpty($data): bool
+    {
+        $total = array_reduce($data, function ($carry, $fundAdministrator): float {
+            $carry += array_reduce($fundAdministrator, function ($carry, $investmentFund): float {
+                $carry += $investmentFund;
+                return $carry;
+            });
+
+            return $carry;
+        });
+
+        return empty($total);
+    }
+
+    /**
      * Extract investment fund
      *
      * @param string $str
-     * @return string|null
+     * @return string
      */
-    private function extractInvestmentFund($str)
+    private function extractInvestmentFund($str): string
     {
         foreach ($this->investmentFunds as $investmentFund) {
             if (stripos($str, "FONDO TIPO {$investmentFund}") !== false) {
@@ -129,23 +190,23 @@ class Superintendency
             }
         }
 
-        return null;
+        return '';
     }
 
     /**
      * Extract fund administrator
      *
      * @param string $str
-     * @return string|null
+     * @return string
      */
-    private function extractFundAdministrator($str)
+    private function extractFundAdministrator($str): string
     {
         foreach ($this->fundAdministrators as $fundAdministrator) {
-            if ($fundAdministrator == $str) {
-                return $fundAdministrator;
+            if (strtoupper($fundAdministrator->name) == $str) {
+                return $str;
             }
         }
 
-        return null;
+        return '';
     }
 }
