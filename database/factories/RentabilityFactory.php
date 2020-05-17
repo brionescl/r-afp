@@ -11,7 +11,7 @@ $factory->define(Rentability::class, function (Faker $faker) {
     return [
         'fund_administrator_id' => factory(FundAdministrator::class),
         'investment_fund' => strtoupper($faker->lexify('?')),
-        'date' => Carbon::now()->format('Y-m-1'),
+        'date' => Carbon::now()->format('Y-m-01'),
         'rentability' => $faker->lexify('#.##'),
         'created_at' => Carbon::now()->format('Y-m-d H:i:s')
     ];
