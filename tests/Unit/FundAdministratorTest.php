@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\FundAdministrator;
 use App\Rentability;
-use Carbon\Carbon;
 use Tests\TestCase;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
