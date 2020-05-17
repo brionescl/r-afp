@@ -2,8 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\FundAdministrator;
+use App\Rentability;
 use App\Superintendency;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -31,6 +32,28 @@ class SuperintendencyTest extends TestCase
 
     public function testSyncRentabilities()
     {
-        $this->assertTrue(true);
+        $date = Carbon::now()->addMonth(-2);
+        $superintendency = new Superintendency;
+        $superintendency->syncRentabilities($date);
+        $rentabilities = Rentability::ofDate($date)->get();
+        $this->assertFalse($rentabilities->isEmpty());
+    }
+
+    public function testSyncRentabilitiesReturnsEmptyInvestmentFunds()
+    {
+        $date = Carbon::now()->addMonth(2);
+        $superintendency = new Superintendency;
+        $superintendency->syncRentabilities($date);
+        $rentabilities = Rentability::ofDate($date)->get();
+        $this->assertTrue($rentabilities->isEmpty());
+    }
+
+    public function testSyncRentabilitiesWhereNotAllFundAdministratorsExist()
+    {
+        $date = Carbon::createFromDate(2005, 8, 1);
+        $superintendency = new Superintendency;
+        $superintendency->syncRentabilities($date);
+        $rentabilities = Rentability::ofDate($date)->get();
+        $this->assertFalse($rentabilities->isEmpty());
     }
 }
