@@ -23,6 +23,7 @@ class FundAdministratorSeeder extends Seeder
             ['name' => 'MODELO', 'created_at' => $now],
             ['name' => 'PLANVITAL', 'created_at' => $now],
             ['name' => 'PROVIDA', 'created_at' => $now],
+            ['name' => 'SANTA MARIA', 'created_at' => $now],
             ['name' => 'UNO', 'created_at' => $now]
         ]);
     }
