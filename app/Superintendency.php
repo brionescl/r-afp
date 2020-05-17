@@ -57,29 +57,6 @@ class Superintendency
     }
 
     /**
-     * Get rentabilities of all fund administrators by date
-     *
-     * @param Carbon $date
-     * @return array
-     */
-    public function getRentabilitiesByDate(Carbon $date): array
-    {
-        $rentabilities = [];
-
-        foreach ($this->fundAdministrators as $fundAdministrator) {
-            $rentabilitiesOfFunds = $fundAdministrator->getRentabilitiesOfFundsByDate($date);
-
-            if (!$rentabilitiesOfFunds->isEmpty()) {
-                foreach ($rentabilitiesOfFunds as $rentability) {
-                    dd($rentability->rentability);
-                }
-            }
-        }
-
-        return $rentabilities;
-    }
-
-    /**
      * Sync fund rentabilities of all fund administrators
      * by specific date
      *
