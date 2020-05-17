@@ -20,19 +20,4 @@ class FundAdministrator extends Model
     {
         return $this->hasMany(Rentability::class);
     }
-
-    /**
-     * Get rentabilities of funds by date
-     *
-     * @param Carbon $date
-     * @return Collection|Rentability[]
-     */
-    public function getRentabilitiesOfFundsByDate(Carbon $date): Collection
-    {
-        $rentabilities = Rentability::where('fund_administrator_id', $this->id)
-            ->where('date', $date->isoFormat('YYYY-MM-01'))
-            ->get();
-
-        return $rentabilities;
-    }
 }
