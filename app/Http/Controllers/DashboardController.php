@@ -105,11 +105,11 @@ class DashboardController extends Controller
     private function getValidDate($year = 0, $month = 0): Carbon
     {
         if (!in_array($year, $this->years)) {
-            return $this->defaultDate;
+            $year = $this->defaultDate->format('Y');
         }
 
         if (!in_array($month, array_keys($this->months))) {
-            return $this->defaultDate;
+            $month = $this->defaultDate->format('m');
         }
 
         return Carbon::createFromDate($year, $month, 1);
