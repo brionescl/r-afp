@@ -19,3 +19,4 @@ jobs:
         script: |
           cd ${{ secrets.PATH }}
           git pull
+          php artisan migrate --force

@@ -6,8 +6,6 @@
 /storage/*.key
 /vendor
 .env
-.env.backup
-.env.testing
 .phpunit.result.cache
 clover.xml
 docker-compose.yml

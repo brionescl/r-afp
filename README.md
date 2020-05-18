@@ -5,30 +5,22 @@
 
 ## Docker
 
+First of all, you must copy the configuration of the docker-compose.yml.default file to docker-compose.yml
+
+```
+cp docker-compose.yml.default docker-compose.yml
+```
+
 If you have docker and docker-composer installed, just run the containers:
 
 ```
-docker/up
+docker-compose up -d
 ```
 
 To shut down the conbtainers, simply:
 
 ```
-docker/down
-```
-
-### Development
-
-First of all, you must copy the configuration of the docker-compose.yml.default file to docker-compose.yml
-
-```
-cp docker/docker-compose.yml.default docker/docker-compose.yml
-```
-
-Then you must run the containers
-
-```
-docker/up
+docker stop $(docker ps -a -q)
 ```
 
 The next step is to configure the development environment
@@ -40,8 +32,17 @@ cp .env.example .env
 Install the dependencies
 
 ```
-docker/composer install
+docker-compose exec app composer install
 ```
+
+Generate encryption key and Configure cache
+
+```
+docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan config:cache
+```
+
+## Database
 
 Configure your database connection (edit .env file)
 
@@ -57,72 +58,23 @@ DB_PASSWORD=your_mysql_root_password
 Finally, it is necessary to execute the migrations and optionally the seeder.
 
 ```
-docker/artisan migrate
+docker-compose exec app php artisan migrate
 ```
 
 ```
-docker/artisan db:seeder
+docker-compose exec app php artisan db:seeder
 ```
 
-The following scripts can help the development process
+## Run tests
 
-#### Install dependencies
-
-```
-docker/composer install
-```
-
-#### Run migrations
+Execute phpunit
 
 ```
-docker/artisan migrate
+docker-compose exec app php -n vendor/bin/phpunit --testdox
 ```
 
-#### Seed database
+Optionally, we can create a coverage documentation in HTML format
 
 ```
-docker/artisan db:seed
-```
-
-#### Run tests
-
-Create a testing database
-```
-touch database/test.sqlite
-```
-
-```
-docker/test
-```
-
-## Server requirements
-
-**Notice:** All server requirements are solved by docker images
-
--   PHP >= 7.2.0
--   BCMath PHP Extension
--   Ctype PHP Extension
--   JSON PHP Extension
--   Mbstring PHP Extension
--   OpenSSL PHP Extension
--   PDO PHP Extension
--   Tokenizer PHP Extension
--   XML PHP Extension
-
-## Database
-
--   Mysql >= 5.7
-
-## Development (without docker)
-
--   Load dependencies
-
-```bash
-composer install
-```
-
--   Run development server (requires PHP > 7.2)
-
-```bash
-php artisan serve
+docker-compose exec app vendor/bin/phpunit --testdox --coverage-text --coverage-html ./public/test-coverage
 ```
