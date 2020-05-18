@@ -136,15 +136,16 @@
         @endif
     </body>
     <script>
+        const url = '{{ url('/') }}'
         document.getElementById('formSelect').addEventListener('submit', function(event) {
             event.preventDefault();
             this.btnSelect.disabled = true
-            window.location.replace(`/dashboard/${this.year.value}/${this.month.value}`)
+            window.location.replace(url + `/dashboard/${this.year.value}/${this.month.value}`)
         })
         sync = function() {
             const year = document.getElementById('formSelect').year.value
             const month = document.getElementById('formSelect').month.value
-            window.location.replace(`/dashboard/${year}/${month}/sync`)
+            window.location.replace(url + `/dashboard/${year}/${month}/sync`)
         }
     </script>
 </html>

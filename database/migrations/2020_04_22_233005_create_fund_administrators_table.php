@@ -22,7 +22,8 @@ class CreateFundAdministratorsTable extends Migration
         });
 
         Artisan::call('db:seed', [
-            '--class' => FundAdministratorSeeder::class,
+            '--force' => true,
+            '--class' => FundAdministratorSeeder::class
         ]);
     }
 
