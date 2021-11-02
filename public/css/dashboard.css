@@ -1,0 +1,112 @@
+html {
+    background: #f5f7f8;
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 12px;
+}
+.band {
+    width: 60%;
+    max-width: 1240px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-gap: 20px;
+}
+@media only screen and (min-width: 500px) {
+    .band {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media only screen and (min-width: 850px) {
+    .band {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+.card {
+    background: white;
+    text-decoration: none;
+    color: #444;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    position: relative;
+    top: 0;
+    transition: all .1s ease-in;
+}
+.card:hover {
+    top: -2px;
+    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+}
+.card article {
+    padding: 20px;
+}
+.card h1 {
+    margin: 0;
+    color: #7999e4;
+    text-transform: lowercase;
+}
+.card h1::first-letter {
+    text-transform: uppercase;
+}
+.card p {
+    line-height: 1;
+    padding-left: 10px;
+}
+.selected-card {
+    background: rgba(249, 231, 186, 0.9);
+}
+.form {
+    display: block;
+    text-align: center;
+    margin: 20px 0 20px 0;
+}
+.form select {
+}
+.sync {
+    display: block;
+    text-align: center;
+    justify-content: center;
+}
+.sync h1 {
+    color: #444;
+}
+.btn {
+    border: none;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn:hover {
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+}
+.btn-primary {
+    color: white;
+    background-color: #008CBA;
+}
+.btn-secondary {
+    color: white;
+    background-color: #4CAF50;
+}
+.btn-default {
+    color: black;
+    background-color: #e7e7e7;
+}
+.red-text {
+    color: red;
+}
+.green-text {
+    color: green;
+}
+.graph {
+    max-width: 1240px;
+    margin: 20px auto;
+    width: 500px;
+}
+.fund-administrator {
+    cursor: pointer;
+}

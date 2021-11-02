@@ -20,7 +20,7 @@ docker-compose up -d
 To shut down the conbtainers, simply:
 
 ```
-docker stop $(docker ps -a -q)
+docker-compose stop
 ```
 
 The next step is to configure the development environment
@@ -33,13 +33,6 @@ Install the dependencies
 
 ```
 docker-compose exec app composer install
-```
-
-Generate encryption key and Configure cache
-
-```
-docker-compose exec app php artisan key:generate
-docker-compose exec app php artisan config:cache
 ```
 
 ## Database
@@ -55,6 +48,13 @@ DB_USERNAME=root
 DB_PASSWORD=your_mysql_root_password
 ```
 
+Generate encryption key and Configure cache
+
+```
+docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan config:cache
+```
+
 Finally, it is necessary to execute the migrations and optionally the seeder.
 
 ```
@@ -62,7 +62,7 @@ docker-compose exec app php artisan migrate
 ```
 
 ```
-docker-compose exec app php artisan db:seeder
+docker-compose exec app php artisan db:seed
 ```
 
 ## Run tests

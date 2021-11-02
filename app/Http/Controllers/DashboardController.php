@@ -70,19 +70,15 @@ class DashboardController extends Controller
     public function dashboard($year = 0, $month = 0): View
     {
         $date = $this->getValidDate($year, $month);
-
-        $rentabilities = Rentability::ofDate($date)
-            ->orderBy('fund_administrator_id', 'asc')
-            ->orderBy('investment_fund', 'asc')
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->fundAdministrator->name;
-            });
+        $rentability = new Rentability();
+        $rentabilities = $rentability->groupByFundAdministrator(Rentability::ofDate($date));
+        $rentabilitiesLast12Months = $rentability->groupByFundAdministrator(Rentability::ofLast12Months($date));
 
         return view(
             'dashboard',
             [
                 'rentabilities' => $rentabilities,
+                'rentabilitiesLast12Months' => $rentabilitiesLast12Months,
                 'years' => array_combine($this->years, $this->years),
                 'yearSelected' => $date->format('Y'),
                 'months' => $this->months,
