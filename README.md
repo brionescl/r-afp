@@ -76,5 +76,5 @@ docker-compose exec app php -n vendor/bin/phpunit --testdox
 Optionally, we can create a coverage documentation in HTML format
 
 ```
-docker-compose exec app vendor/bin/phpunit --testdox --coverage-text --coverage-html ./public/test-coverage
+docker-compose exec app php -dxdebug.mode=coverage vendor/bin/phpunit --coverage-text --coverage-html ./public/test-coverage
 ```
