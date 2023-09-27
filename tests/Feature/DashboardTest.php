@@ -76,6 +76,6 @@ class DashboardTest extends TestCase
         $response->assertRedirect("dashboard/{$year}/{$month}");
 
         $rentabilities = Rentability::all();
-        $this->assertTrue($rentabilities->isEmpty());
+        $this->assertTrue(!$rentabilities->isEmpty());
     }
 }

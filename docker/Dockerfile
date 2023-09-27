@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM arm64v8/php:7.4-fpm
 
 # Set working directory
 WORKDIR /var/www
@@ -27,7 +27,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo_mysql zip exif pcntl gd
 
 # Install xdebug for development
-RUN pecl install xdebug \
+RUN pecl install xdebug-3.1.5 \
     && docker-php-ext-enable xdebug
 
 # Install composer
